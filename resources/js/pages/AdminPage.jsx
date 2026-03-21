@@ -106,7 +106,12 @@ export default function AdminPage() {
                     {recent.map(b => (
                       <tr key={b.id}>
                         <td className="admin-td">{b.user_name}</td>
-                        <td className="admin-td">{b.room_emoji} {b.room_name}</td>
+                        <td className="admin-td">
+                        <div style={{display:'flex',alignItems:'center',gap:8}}>
+                          <img src={({'Standard':'https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=50&q=80','Deluxe':'https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=50&q=80','Suite':'https://images.unsplash.com/photo-1618773928121-c32242e63f39?w=50&q=80','Presidential':'https://images.unsplash.com/photo-1590490360182-c33d57733427?w=50&q=80'})[b.room_type]||'https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=50&q=80'} alt="" style={{width:40,height:28,objectFit:'cover',flexShrink:0}}/>
+                          {b.room_name}
+                        </div>
+                      </td>
                         <td className="admin-td">{b.checkin}</td>
                         <td className="admin-td">{b.checkout}</td>
                         <td className="admin-td" style={{ color:'var(--gold)' }}>{fmt(b.total)}</td>
