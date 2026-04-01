@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
+import { useAuth } from '../context/AuthContext.jsx'   // ← thêm dòng này
 import { roomsAPI } from '../services/api.js'
 import BookingModal from '../components/BookingModal.jsx'
 
@@ -18,7 +19,7 @@ const ROOM_IMGS = {
 }
 
 function RoomCard({ room, onBook }) {
-  const { useAuth } = require('../context/AuthContext.jsx') // eslint-disable-line
+  const { user } = useAuth() // eslint-disable-line
   const img = ROOM_IMGS[room.type] || ROOM_IMGS.Standard
   const available = room.status === 'available'
   const amenities = Array.isArray(room.amenities) ? room.amenities : []

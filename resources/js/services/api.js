@@ -46,4 +46,35 @@ export const usersAPI = {
   getAll: () => api.get('/users'),
 }
 
+export const roomCategoriesAPI = {
+  getAll:  ()        => api.get('/room-categories'),
+  create:  d         => api.post('/room-categories', d),
+  update:  (id, d)   => api.put(`/room-categories/${id}`, d),
+  delete:  id        => api.delete(`/room-categories/${id}`),
+}
+
+export const servicesAPI = {
+  getAll:  ()        => api.get('/services'),
+  create:  d         => api.post('/services', d),
+  update:  (id, d)   => api.put(`/services/${id}`, d),
+}
+
+export const bookingServicesAPI = {
+  add:     (bookingId, d) =>
+    api.post(`/bookings/${bookingId}/services`, d),
+  remove:  (bookingId, bsId) =>
+    api.delete(`/bookings/${bookingId}/services/${bsId}`),
+}
+
+// Cập nhật AuthContext — check role
+export const useAuth = () => {
+  const ctx = useContext(AuthContext)
+  return {
+    ...ctx,
+    isGuest:        () => ctx.user?.role === 'guest',
+    isReceptionist: () => ctx.user?.role === 'receptionist',
+    isManager:      () => ctx.user?.role === 'manager',
+    isStaff:        () => ['receptionist','manager'].includes(ctx.user?.role),
+  }
+}
 export default api

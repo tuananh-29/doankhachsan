@@ -1,4 +1,5 @@
 <?php
+
 namespace Database\Seeders;
 
 use App\Models\User;
@@ -9,7 +10,6 @@ class UserSeeder extends Seeder
 {
     public function run(): void
     {
-        // Manager — toàn quyền
         User::firstOrCreate(['email' => 'manager@hotel.com'], [
             'name'     => 'Nguyễn Hoàng Manager',
             'password' => Hash::make('manager123'),
@@ -17,7 +17,6 @@ class UserSeeder extends Seeder
             'role'     => 'manager',
         ]);
 
-        // Lễ tân — xem đặt phòng, check-in/out
         User::firstOrCreate(['email' => 'receptionist@hotel.com'], [
             'name'     => 'Trần Thị Lễ Tân',
             'password' => Hash::make('recept123'),
@@ -25,12 +24,13 @@ class UserSeeder extends Seeder
             'role'     => 'receptionist',
         ]);
 
-        // Khách hàng demo
         User::firstOrCreate(['email' => 'guest@hotel.com'], [
             'name'     => 'Lê Văn Khách',
             'password' => Hash::make('guest123'),
             'phone'    => '0901234567',
             'role'     => 'guest',
         ]);
+
+        echo "✅ Users seeded!\n";
     }
 }
