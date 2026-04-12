@@ -15,10 +15,20 @@ return new class extends Migration {
             $table->date('checkout');
             $table->string('guests')->default('1 khách');
             $table->text('note')->nullable();
-            $table->unsignedBigInteger('total');
-            $table->string('status')->default('confirmed');
+            $table->unsignedBigInteger('room_total');
+            $table->enum('status', [
+                'pending',
+                'confirmed',
+                'checked_in',
+                'checked_out',
+                'cancelled',
+            ])->default('confirmed');
             $table->timestamps();
         });
     }
-    public function down(): void { Schema::dropIfExists('bookings'); }
+
+    public function down(): void
+    {
+        Schema::dropIfExists('bookings');
+    }
 };
