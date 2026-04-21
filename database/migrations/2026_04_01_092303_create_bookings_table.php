@@ -13,7 +13,7 @@ return new class extends Migration {
             $table->foreignId('room_id')->constrained()->cascadeOnDelete();
             $table->date('checkin');
             $table->date('checkout');
-            $table->string('guests')->default('1 khách');
+            $table->string('guests')->nullable(); 
             $table->text('note')->nullable();
             $table->unsignedBigInteger('room_total');
             $table->enum('status', [

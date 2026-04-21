@@ -13,7 +13,6 @@ class DatabaseSeeder extends Seeder
 {
     public function run(): void
     {
-        // ===== 1. USERS (Tài khoản người dùng) =====
         User::firstOrCreate(['email' => 'manager@hotel.com'], [
             'name'     => 'Nguyễn Hoàng Manager',
             'password' => Hash::make('manager123'),
@@ -35,7 +34,6 @@ class DatabaseSeeder extends Seeder
             'role'     => 'guest',
         ]);
 
-        // ===== 2. ROOM CATEGORIES (Loại phòng) =====
         $cats = [
             [
                 'name'            => 'Standard',
@@ -48,82 +46,67 @@ class DatabaseSeeder extends Seeder
                 'name'            => 'Deluxe',
                 'description'     => 'Phòng Deluxe sang trọng với tầm nhìn panorama, bồn tắm và ban công riêng.',
                 'price_per_night' => 2500000,
-                'amenities'       => json_encode(['WiFi','Smart TV 55"','Điều hòa 2 chiều','Minibar','Bồn tắm']),
-                'image_url'       => 'https://images.unsplash.com/photo-1590490360182-c33d57733427?w=600&q=80',
+                'amenities'       => json_encode(['WiFi','TV 4K','Điều hòa','Minibar','Bồn tắm','Ban công']),
+                'image_url'       => 'https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=600&q=80',
             ],
             [
                 'name'            => 'Suite',
-                'description'     => 'Phòng Suite cao cấp bậc nhất với không gian phòng khách riêng biệt và dịch vụ VIP.',
-                'price_per_night' => 4500000,
-                'amenities'       => json_encode(['WiFi Tốc độ cao','Smart TV 65"','Phòng khách','Bồn tắm massage', 'Ban công']),
-                'image_url'       => 'https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=600&q=80',
-            ]
+                'description'     => 'Suite cao cấp với phòng khách rộng và tầm nhìn toàn cảnh.',
+                'price_per_night' => 5000000,
+                'amenities'       => json_encode(['WiFi','TV 4K','Điều hòa','Minibar','Bồn tắm Jacuzzi','Butler 24/7']),
+                'image_url'       => 'https://images.unsplash.com/photo-1618773928121-c32242e63f39?w=600&q=80',
+            ],
+            [
+                'name'            => 'Presidential',
+                'description'     => 'Suite tổng thống với 3 phòng ngủ, bếp riêng và hồ bơi riêng.',
+                'price_per_night' => 15000000,
+                'amenities'       => json_encode(['WiFi','TV 4K x3','Điều hòa','Bếp riêng','Hồ bơi','Butler']),
+                'image_url'       => 'https://images.unsplash.com/photo-1590490360182-c33d57733427?w=600&q=80',
+            ],
         ];
 
         foreach ($cats as $cat) {
             RoomCategory::firstOrCreate(['name' => $cat['name']], $cat);
         }
 
-        // ===== 3. ROOMS (Phòng Vật Lý) =====
-        // Lấy ID của các loại phòng vừa tạo ở trên để làm khóa ngoại
-        $standardId = RoomCategory::where('name', 'Standard')->first()->id;
-        $deluxeId   = RoomCategory::where('name', 'Deluxe')->first()->id;
-        $suiteId    = RoomCategory::where('name', 'Suite')->first()->id;
+        $std  = RoomCategory::where('name', 'Standard')->first();
+        $dlx  = RoomCategory::where('name', 'Deluxe')->first();
+        $suit = RoomCategory::where('name', 'Suite')->first();
+        $pres = RoomCategory::where('name', 'Presidential')->first();
 
         $rooms = [
-            [
-                'room_number'      => '101', 
-                'room_category_id' => $standardId, 
-                'floor'            => '1', 
-                'status'           => 'available',
-                'notes'            => 'Gần thang máy'
-            ],
-            [
-                'room_number'      => '102', 
-                'room_category_id' => $standardId, 
-                'floor'            => '1', 
-                'status'           => 'available',
-                'notes'            => ''
-            ],
-            [
-                'room_number'      => '201', 
-                'room_category_id' => $deluxeId,   
-                'floor'            => '2', 
-                'status'           => 'available',
-                'notes'            => 'View biển'
-            ],
-            [
-                'room_number'      => '202', 
-                'room_category_id' => $deluxeId,   
-                'floor'            => '2', 
-                'status'           => 'available',
-                'notes'            => 'View thành phố'
-            ],
-            [
-                'room_number'      => '301', 
-                'room_category_id' => $suiteId,    
-                'floor'            => '3', 
-                'status'           => 'available',
-                'notes'            => 'Phòng tổng thống, góc nhìn 180 độ'
-            ],
+            ['room_category_id' => $std->id,  'room_number' => '101', 'floor' => '1', 'status' => 'available'],
+            ['room_category_id' => $std->id,  'room_number' => '102', 'floor' => '1', 'status' => 'available'],
+            ['room_category_id' => $std->id,  'room_number' => '103', 'floor' => '1', 'status' => 'available'],
+            ['room_category_id' => $dlx->id,  'room_number' => '201', 'floor' => '2', 'status' => 'available'],
+            ['room_category_id' => $dlx->id,  'room_number' => '202', 'floor' => '2', 'status' => 'available'],
+            ['room_category_id' => $suit->id, 'room_number' => '301', 'floor' => '3', 'status' => 'available'],
+            ['room_category_id' => $suit->id, 'room_number' => '302', 'floor' => '3', 'status' => 'available'],
+            ['room_category_id' => $pres->id, 'room_number' => '401', 'floor' => '4', 'status' => 'available'],
         ];
 
         foreach ($rooms as $room) {
             Room::firstOrCreate(['room_number' => $room['room_number']], $room);
         }
 
-        // ===== 4. SERVICES (Dịch vụ khách sạn) =====
         $services = [
-            ['name' => 'Nước suối Dasani', 'price' => 15000, 'unit' => 'chai', 'category' => 'Đồ uống'],
-            ['name' => 'Coca Cola', 'price' => 25000, 'unit' => 'lon', 'category' => 'Đồ uống'],
-            ['name' => 'Ăn sáng Buffet', 'price' => 150000, 'unit' => 'vé', 'category' => 'Ẩm thực'],
-            ['name' => 'Giặt ủi quần áo', 'price' => 50000, 'unit' => 'kg', 'category' => 'Vệ sinh'],
-            ['name' => 'Thuê xe máy', 'price' => 150000, 'unit' => 'ngày', 'category' => 'Di chuyển'],
-            ['name' => 'Massage Thư giãn', 'price' => 350000, 'unit' => 'lượt', 'category' => 'Spa'],
+            ['name' => 'Nước suối',       'price' => 15000,  'unit' => 'chai',  'category' => 'Ẩm thực'],
+            ['name' => 'Nước ngọt',       'price' => 20000,  'unit' => 'lon',   'category' => 'Ẩm thực'],
+            ['name' => 'Bữa sáng',        'price' => 150000, 'unit' => 'người', 'category' => 'Ẩm thực'],
+            ['name' => 'Giặt áo',         'price' => 25000,  'unit' => 'cái',   'category' => 'Giặt ủi'],
+            ['name' => 'Giặt quần',       'price' => 30000,  'unit' => 'cái',   'category' => 'Giặt ủi'],
+            ['name' => 'Massage 60 phút', 'price' => 350000, 'unit' => 'lượt',  'category' => 'Spa'],
+            ['name' => 'Thuê xe máy',     'price' => 150000, 'unit' => 'ngày',  'category' => 'Di chuyển'],
+            ['name' => 'Đưa đón sân bay', 'price' => 300000, 'unit' => 'lượt',  'category' => 'Di chuyển'],
         ];
 
-        foreach ($services as $service) {
-            Service::firstOrCreate(['name' => $service['name']], $service);
+        foreach ($services as $s) {
+            Service::firstOrCreate(['name' => $s['name']], $s);
         }
+
+        echo "\n✅ Seed xong!\n";
+        echo "   manager@hotel.com      / manager123\n";
+        echo "   receptionist@hotel.com / recept123\n";
+        echo "   guest@hotel.com        / guest123\n";
     }
 }
